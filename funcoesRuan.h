@@ -1,6 +1,8 @@
 //estrutura para armazenarenamento de dados
 
 struct gerenciador_finaceiro {
+    char *nome[50];
+    char *sobrenome[50];
     double saldo;
     char *categoria[50];
     char *descricao[50];
@@ -14,10 +16,10 @@ struct gerenciador_finaceiro gerenciador_financas;
 
 struct gerenciador_finaceiro relatorio_lido;
 
-void menu(int opcao);
+void menu();
 
-double receita(struct gerenciador_finaceiro *gerenciadorFinancas);
+double receita(struct gerenciador_finaceiro *gerenciador_financas);
 
-double despesas(struct gerenciador_finaceiro *gerenciadorFinancas);
+double despesas(struct gerenciador_finaceiro *gerenciador_financas);
 
-void relatorio(struct gerenciador_finaceiro *gerenciadorFinancas, double total);
+void relatorio(struct gerenciador_finaceiro *gerenciador_financas, double total);

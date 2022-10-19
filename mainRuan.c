@@ -1,9 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "funcoesRuan.h"
+#include "funcoes.h"
 
 int main() {
-    int opcao;
-    menu(opcao);
+    menu();
 return 0;
 }
