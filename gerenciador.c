@@ -58,20 +58,29 @@ void passar_txt(){
 
 int main(){
     int n;
-    printf("----------Bem Vindo ao Gerenciador financeiro!!-----------\n");
-    printf("Digite a opção desejada: \n 1-cadastar\n");
-    scanf("%d",&n);
+    do{
+        printf("----------Bem Vindo ao Gerenciador financeiro!!-----------\n");
+        printf("Digite a opção desejada: \n 0-sair\n 1-cadastar\n");
+        scanf("%d",&n);
 
-    switch (n)
-    {
-    case 1:
-        cadastrar();
-        arquivo_binário();
-        ler_binário();
-        passar_txt();
-        break;
+        switch (n)
+        {
+
+        case 0:
+            printf("OK... Saindo...\n");
+            break;
+        case 1:
+            printf("---------OPÇÃO 1 -----------\n");
+            cadastrar();
+            arquivo_binário();
+            ler_binário();
+            passar_txt();
+            break;
     
-    default:
-        return n;
+        default:
+            return n;
     }
+}
+while (n !=0);
+        printf("----------------------------------------------------------");
 }
