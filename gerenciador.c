@@ -54,9 +54,7 @@ void passar_txt(){
     fclose(arq);
 }
 
-
-
-int main(){
+void menu(){
     int n;
     do{
         printf("----------Bem Vindo ao Gerenciador financeiro!!-----------\n");
@@ -78,9 +76,14 @@ int main(){
             break;
     
         default:
-            return n;
+            printf("ERRO!! opção inválida, Digite uma opção válida!\n");
+            return menu();
     }
 }
 while (n !=0);
         printf("----------------------------------------------------------");
+}
+
+int main(){
+    menu();
 }

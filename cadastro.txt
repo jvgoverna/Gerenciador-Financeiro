@@ -28,3 +28,8 @@ Sobrenome: 2
 Valor: 2.00
 Descrição: 2
 Categoria: 2
+Nome: Ruan
+Sobrenome: Turola
+Valor: 123.00
+Descrição: lol
+Categoria: skin
