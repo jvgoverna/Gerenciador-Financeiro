@@ -78,7 +78,9 @@ void menu(){
     do{
         printf("----------Bem Vindo ao Gerenciador financeiro!!-----------\n");
         printf("Digite a opção desejada: \n 0-Sair\n 1-Cadastar Usuario\n 2-Gerar relatorio do ultimo mes\n 3-Gerar relatorio dos ultimos 12 meses\n");
+        printf("\nDigite a opção desejada: ");
         scanf("%d",&n);
+
 
         switch (n)
         {
@@ -101,12 +103,13 @@ void menu(){
                 passar_txt();
                 break;
             default:
+                printf("\033c");
                 printf("ERRO!! opção inválida, Digite uma opção válida!\n");
                 return menu();
         }
     }
     while (n !=0);
-    printf("----------------------------------------------------------");
+    printf("----------------------------------------------------------\n");
 }
 
 int main(){
