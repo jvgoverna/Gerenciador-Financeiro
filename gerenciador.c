@@ -37,15 +37,29 @@ void arquivo_binário(){
 }
 
 void ler_binário(){
+    char *result;
+    char Linha[100];
+    int i;
     gerenciador g;
     FILE *arq = fopen("cadastro.bin","rw");
     fread(&g,sizeof(gerenciador),1,arq);
+
+    i = 1;
+    while (!feof(arq))
+    {
+        // Lê uma linha (inclusive com o '\n')
+        result = fgets(Linha, 100, arq);  // o 'fgets' lê até 99 caracteres ou até o '\n'
+        if (result)  // Se foi possível ler
+            printf("Linha %d : %s",i,Linha);
+        i++;
+    }
+
     fclose(arq);
-    printf("Nome inteiro: %s %s\n",g.nome,g.sobrenome);
-    printf("Descrição: %s\n",g.descrição);
-    printf("Categoria: %s\n",g.categoria);
-    printf("Valor: %.2lf\n",g.valor);
-    printf("Data: %d/%d/%d\n",g.dia,g.mes,g.ano);
+    //printf("Nome inteiro: %s %s\n",g.nome,g.sobrenome);
+    //printf("Descrição: %s\n",g.descrição);
+    //printf("Categoria: %s\n",g.categoria);
+    //printf("Valor: %.2lf\n",g.valor);
+    //printf("Data: %d/%d/%d\n",g.dia,g.mes,g.ano);
 }
 
 void passar_txt(){
@@ -63,12 +77,11 @@ void menu(){
     int n;
     do{
         printf("----------Bem Vindo ao Gerenciador financeiro!!-----------\n");
-        printf("Digite a opção desejada: \n 0-sair\n 1-cadastar\n");
+        printf("Digite a opção desejada: \n 0-Sair\n 1-Cadastar Usuario\n 2-Gerar relatorio do ultimo mes\n 3-Gerar relatorio dos ultimos 12 meses\n");
         scanf("%d",&n);
 
         switch (n)
         {
-
             case 0:
                 printf("OK... Saindo...\n");
                 break;
@@ -76,10 +89,17 @@ void menu(){
                 printf("---------OPÇÃO 1 -----------\n");
                 cadastrar();
                 arquivo_binário();
+                break;
+            case 2:
+                printf("---------OPÇÃO 2 -----------\n");
+                //ler_binário();
+                //passar_txt();
+                break;
+            case 3:
+                printf("---------OPÇÃO 3 -----------\n");
                 ler_binário();
                 passar_txt();
                 break;
-
             default:
                 printf("ERRO!! opção inválida, Digite uma opção válida!\n");
                 return menu();
