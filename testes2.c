@@ -149,26 +149,31 @@ void formas_pagamento() {
 
 void menu() {
     int opcao;
-    printf("----------Bem Vindo ao Gerenciador financeiro!!-----------\n");
+    do{
+         printf("----------Bem Vindo ao Gerenciador financeiro!!-----------\n");
     printf("0 - Sair\n");
     printf("1 - Cadastrar Saldo\n");
     printf("2 - Cadastrar despesas\n");
     printf("3 - Gerar relatorio do ultimo mes\n");
     printf("4 - Gerar relatorio dos ultimos 12 meses\n");
-    printf("4 - Forma de pagamento\n");
+    printf("5 - Forma de pagamento\n");
 
     printf("Digite a opção desejada: ");
     scanf("%d", &opcao);
 
-    switch (opcao) {
+    switch (opcao) 
+        {
         case 0:
             printf("Saindo do programa...\n");
             break;
         case 1:
+            printf("\033c");
             printf("Cadastrar Saldo\n");
             receita();
             break;
         case 2:
+        // ** POR ALGUM MOTIVO AO DIGITAR AS DESPESAS ELE ESTÁ PERGUNTANDO 2 VEZES AUTOMATICAMENTE
+        // PODEMOS FAZER UMA OPÇÃO NESSA FUNÇÃO COLOCANDO QUANTAS DESPESAS SERÃO CADASTRADAS!!
             printf("Cadastrar despesas\n");
             despesa();
             gerar_arquivo();
@@ -188,11 +193,16 @@ void menu() {
             formas_pagamento();
             break;
         default:
+            printf("\033c");
             printf("Opção inválida!\n");
-            break;
+            return menu();
+    
+    } 
     }
-}
+    while (opcao != 0);
+        printf("----------------------------------------------------------\n");
 
+}
     int main() {
         menu();
     }
