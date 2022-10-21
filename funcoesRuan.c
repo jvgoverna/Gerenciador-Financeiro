@@ -3,6 +3,10 @@
 
 //menu de opcoes
 
+struct gerenciador_finaceiro gerenciador_financas;
+
+struct gerenciador_finaceiro relatorio_lido;
+
 void menu() {
     int opcao;
     do {
@@ -21,15 +25,15 @@ void menu() {
                 printf("Saindo do programa...\n");
                 break;
             case 1:
-                receita(&gerenciador_financas);
+                receita();
                 break;
             case 2:
-                despesas(&gerenciador_financas);
+                despesas();
                 break;
             case 3:
-                relatorio(&gerenciador_financas, despesas(&gerenciador_financas));
+                relatorio(despesas(&gerenciador_financas));
                 break;
-            //case 4:
+                //case 4:
                 //formaPagamento(gereciadorFinancas);
                 //break;
             default:
@@ -37,43 +41,70 @@ void menu() {
                 return menu();
         }
     } while (opcao != 0);
-        printf("----------------------------------------------------------");
+    printf("----------------------------------------------------------");
 }
 
+void mes_anterior(int ano,int mes,int *ano_a,int *mes_a){
+    if(mes == 1){
+        ano_a -= 1;
+        mes_a = 12;
+    }else{
+        ano_a = ano;
+        mes_a = mes - 1;
+    }
+}
 
-double receita(struct gerenciador_finaceiro *gerenciador_financas){
+double receita(){
+
+    struct gerenciador_finaceiro gerenciador_financas;
+
     printf("Digite o Nome: ");
-    scanf("%s", gerenciador_financas->nome);
+    scanf("%s", gerenciador_financas.nome);
     printf("Digite o Sobrenome: ");
-    scanf("%s", gerenciador_financas->sobrenome);
+    scanf("%s", gerenciador_financas.sobrenome);
     printf("Digite o saldo Inical: ");
-    scanf("%lf", gerenciador_financas->saldo);
+    scanf("%lf", gerenciador_financas.saldo);
 
-    FILE *f = fopen("despesas.bin", "wb");
+
+    FILE *f ;
+    
+    char *caminho;
+    
+    for (int i = 0; i < 12; i++)
+    {
+        mes_anterior( ano, mes,*ano_a,*mes_a);
+        sprintf(caminho,"relatorio_%d_%d.bin", ano, mes);
+        f = fopen(caminho,"wb");
+    }
+        
+    }
 
     fwrite(&gerenciador_financas, sizeof(struct gerenciador_finaceiro), 1, f);
 
     fclose(f);
 
-    return gerenciador_financas->saldo;
+    return gerenciador_financas.saldo;
 }
 
-double despesas(struct gerenciador_finaceiro *gerenciador_financas){
+double despesas(){
+
+    struct gerenciador_finaceiro gerenciador_financas;
+
     double total = 0;
     printf("Digite a categoria: ");
-    scanf("%s", gerenciador_financas->categoria);
+    scanf("%s", gerenciador_financas.categoria);
     printf("Digite a descrição: ");
-    scanf("%s", gerenciador_financas->descricao);
+    scanf("%s", gerenciador_financas.descricao);
     printf("Digite o valor: ");
-    scanf("%lf", &gerenciador_financas->valor);
+    scanf("%lf", &gerenciador_financas.valor);
     printf("Digite o dia: ");
-    scanf("%d", &gerenciador_financas->dia);
+    scanf("%d", &gerenciador_financas.dia);
     printf("Digite o mês: ");
-    scanf("%d", &gerenciador_financas->mes);
+    scanf("%d", &gerenciador_financas.mes);
     printf("Digite o ano: ");
-    scanf("%d", &gerenciador_financas->ano);
+    scanf("%d", &gerenciador_financas.ano);
 
-    total += gerenciador_financas->valor;
+    total += gerenciador_financas.valor;
 
     FILE *f = fopen("despesas.bin", "ab");
 
@@ -84,7 +115,9 @@ double despesas(struct gerenciador_finaceiro *gerenciador_financas){
     return total;
 }
 
-void relatorio(struct gerenciador_finaceiro *gerenciador_financas, double total){
+void relatorio(double total){
+
+    struct gerenciador_finaceiro gerenciador_financas;
 
     FILE *fr = fopen("despesas.bin", "rb");
 
@@ -92,28 +125,28 @@ void relatorio(struct gerenciador_finaceiro *gerenciador_financas, double total)
 
     fclose(fr);
 
-    printf("Categoria: %s\n", gerenciador_financas->categoria);
-    printf("Descrição: %s\n", gerenciador_financas->descricao);
-    printf("Valor: %lf\n", gerenciador_financas->valor);
-    printf("Data: %d/%d/%d\n", gerenciador_financas->dia, gerenciador_financas->mes, gerenciador_financas->ano);
+    printf("Categoria: %s\n", gerenciador_financas.categoria);
+    printf("Descrição: %s\n", gerenciador_financas.descricao);
+    printf("Valor: %lf\n", gerenciador_financas.valor);
+    printf("Data: %d/%d/%d\n", gerenciador_financas.dia, gerenciador_financas.mes, gerenciador_financas.ano);
     printf("Total: %lf\n", total);
 
     FILE *ftxt = fopen("relatorio.txt", "a");
 
-    fprintf(ftxt, "Categoria: %s\n", gerenciador_financas->categoria);
-    fprintf(ftxt, "Descrição: %s\n", gerenciador_financas->descricao);
-    fprintf(ftxt, "Valor: %lf\n", gerenciador_financas->valor);
-    printf("Data: %d/%d/%d\n", gerenciador_financas->dia, gerenciador_financas->mes, gerenciador_financas->ano);
+    fprintf(ftxt, "Categoria: %s\n", gerenciador_financas.categoria);
+    fprintf(ftxt, "Descrição: %s\n", gerenciador_financas.descricao);
+    fprintf(ftxt, "Valor: %lf\n", gerenciador_financas.valor);
+    printf("Data: %d/%d/%d\n", gerenciador_financas.dia, gerenciador_financas.mes, gerenciador_financas.ano);
     fprintf(ftxt, "Total: %lf\n", total);
 
     fclose(ftxt);
 }
 
 //void Forma_Pagamento(struct gerenciador_finaceiro *gerenciadorFinancas, double total){
-   // printf("Forma de pagamento: ");
-    //scanf("%s", gerenciadorFinancas->formaPagamento);
-   // printf("Valor pago: ");
-   // scanf("%lf", &gerenciadorFinancas->valorPago);
-   // printf("Troco: %lf", gerenciadorFinancas->valorPago - total);
+// printf("Forma de pagamento: ");
+//scanf("%s", gerenciadorFinancas->formaPagamento);
+// printf("Valor pago: ");
+// scanf("%lf", &gerenciadorFinancas->valorPago);
+// printf("Troco: %lf", gerenciadorFinancas->valorPago - total);
 //}
 
