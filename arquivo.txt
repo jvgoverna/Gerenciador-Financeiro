@@ -1,1 +1,1 @@
-Categoria: sDescricao: dValor: 23.00Data: 2/3/5555
+Categoria: sDescricao: dValor: 23.00Data: 2/3/5555Categoria: lolDescricao: skinValor: 56.70Data: 2/5/2003

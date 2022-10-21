@@ -150,19 +150,19 @@ void formas_pagamento() {
 void menu() {
     int opcao;
     do{
-         printf("----------Bem Vindo ao Gerenciador financeiro!!-----------\n");
-    printf("0 - Sair\n");
-    printf("1 - Cadastrar Saldo\n");
-    printf("2 - Cadastrar despesas\n");
-    printf("3 - Gerar relatorio do ultimo mes\n");
-    printf("4 - Gerar relatorio dos ultimos 12 meses\n");
-    printf("5 - Forma de pagamento\n");
+        printf("----------Bem Vindo ao Gerenciador financeiro!!-----------\n");
+        printf("0 - Sair\n");
+        printf("1 - Cadastrar Saldo\n");
+        printf("2 - Cadastrar despesas\n");
+        printf("3 - Gerar relatorio do ultimo mes\n");
+        printf("4 - Gerar relatorio dos ultimos 12 meses\n");
+        printf("5 - Forma de pagamento\n");
 
-    printf("Digite a opção desejada: ");
-    scanf("%d", &opcao);
+        printf("Digite a opção desejada: ");
+        scanf("%d", &opcao);
 
     switch (opcao) 
-        {
+        {   
         case 0:
             printf("Saindo do programa...\n");
             break;
