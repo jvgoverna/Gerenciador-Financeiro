@@ -68,23 +68,24 @@ double receita(){
 
     FILE *f ;
     
+    int ano;int *ano_a;
+    int mes;int *mes_a;
+
     char *caminho;
-    
-    for (int i = 0; i < 12; i++)
-    {
+
+    for (int i = 0; i < 12; i++){
         mes_anterior( ano, mes,*ano_a,*mes_a);
-        sprintf(caminho,"relatorio_%d_%d.bin", ano, mes);
+        sprintf(caminho,"relatorio_%02d_%02d.bin", ano, mes);
         f = fopen(caminho,"wb");
     }
-        
-    }
-
     fwrite(&gerenciador_financas, sizeof(struct gerenciador_finaceiro), 1, f);
 
     fclose(f);
 
+    mes_anterior(ano, mes, *ano_a, *mes_a);
+
     return gerenciador_financas.saldo;
-}
+    }
 
 double despesas(){
 
