@@ -8,17 +8,19 @@ typedef struct{
     double valor;
     int dia,mes,ano;
 }gerenciador;
-
+void desc(void *d){ //Funcao utilizada para receber varias strings do usuario
+    scanf(" %99[^\n]", d);
+}
 void cadastrar(){
     gerenciador g;
     printf("Digite seu nome:\n");
-    scanf("%s",g.nome);
+    desc(&g.nome);
     printf("Digite seu sobrenome:\n");
-    scanf("%s",g.sobrenome);
+    desc(&g.sobrenome);
     printf("Digite a descrição: \n");
-    scanf("%s",g.descrição);
+    desc(&g.descrição);
     printf("Digite a categoria: \n");
-    scanf("%s",g.categoria);
+    desc(&g.categoria);
     printf("Digite o valor que será colocado: \n");
     scanf("%lf",&g.valor);
     printf("Digite o dia: \n");
@@ -37,35 +39,23 @@ void arquivo_binário(){
 }
 
 void ler_binário(){
-    char *result;
-    char Linha[100];
-    int i;
     gerenciador g;
     FILE *arq = fopen("cadastro.bin","rw");
     fread(&g,sizeof(gerenciador),1,arq);
-
-    i = 1;
-    while (!feof(arq))
-    {
-        // Lê uma linha (inclusive com o '\n')
-        result = fgets(Linha, 100, arq);  // o 'fgets' lê até 99 caracteres ou até o '\n'
-        if (result)  // Se foi possível ler
-            printf("Linha %d : %s",i,Linha);
-        i++;
-    }
-
+    printf("Nome: %s\n",g.nome);
+    printf("Sobrenome: %s\n",g.sobrenome);
+    printf("Descrição: %s\n",g.descrição);
+    printf("Categoria: %s\n",g.categoria);
+    printf("Valor: %.2lf\n",g.valor);
+    printf("Data: %d/%d/%d\n",g.dia,g.mes,g.ano);
     fclose(arq);
-    //printf("Nome inteiro: %s %s\n",g.nome,g.sobrenome);
-    //printf("Descrição: %s\n",g.descrição);
-    //printf("Categoria: %s\n",g.categoria);
-    //printf("Valor: %.2lf\n",g.valor);
-    //printf("Data: %d/%d/%d\n",g.dia,g.mes,g.ano);
 }
 
 void passar_txt(){
     gerenciador g;
     FILE *arq = fopen("cadastro.txt","a+");
-    fprintf(arq,"Nome inteiro: %s %s\n",g.nome,g.sobrenome);
+    fprintf(arq,"Nome : %s\n",g.nome);
+    fprintf(arq,"Sobrenome: %s\n",g.sobrenome);
     fprintf(arq,"Descrição: %s\n",g.descrição);
     fprintf(arq,"Categoria: %s\n",g.categoria);
     fprintf(arq,"Valor: %.2lf\n",g.valor);
@@ -91,6 +81,7 @@ void menu(){
                 printf("---------OPÇÃO 1 -----------\n");
                 cadastrar();
                 arquivo_binário();
+                passar_txt();
                 break;
             case 2:
                 printf("---------OPÇÃO 2 -----------\n");

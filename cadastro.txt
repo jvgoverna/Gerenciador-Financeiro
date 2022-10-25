@@ -1,40 +1,6 @@
-Nome: joao
-Sobrenome: Governatore
-Valor: 129.56
-Descrição: Conta
-Categoria: conta
-Nome: cle
-Sobrenome: 3
-Valor: 4.00
-Descrição: 5
-Categoria: 7
-Nome: joao]
-Sobrenome: Governatore
-Valor: 567.00
-Descrição: k
-Categoria: k
-Nome: 2
-Sobrenome: 2
-Valor: 2.00
-Descrição: 2
-Categoria: 2
-Nome: luciana
-Sobrenome: Germinio
-Valor: 4567.00
-Descrição: roupa
-Categoria: compra
-Nome: f
-Sobrenome: 2
-Valor: 2.00
-Descrição: 2
-Categoria: 2
-Nome: Ruan
-Sobrenome: Turola
-Valor: 123.00
-Descrição: lol
-Categoria: skin
-Nome inteiro: �1G�U �
-Descrição: �
-Categoria: ��+V
-Valor: 0.00
-Data: 303474064/32765/303474840
+Nome : nathan deuh
+Sobrenome: ovg
+Descrição: ihih 
+Categoria: ded ff
+Valor: 123.76
+Data: 2/3/2004
