@@ -8,19 +8,19 @@ typedef struct{
     double valor;
     int dia,mes,ano;
 }gerenciador;
-void desc(void *d){ //Funcao utilizada para receber varias strings do usuario
+void string(void *d){ //Funcao utilizada para receber varias strings do usuario
     scanf(" %99[^\n]", d);
 }
 void cadastrar(){
     gerenciador g;
     printf("Digite seu nome:\n");
-    desc(&g.nome);
+    string(&g.nome);
     printf("Digite seu sobrenome:\n");
-    desc(&g.sobrenome);
+    string(&g.sobrenome);
     printf("Digite a descrição: \n");
-    desc(&g.descrição);
+    string(&g.descrição);
     printf("Digite a categoria: \n");
-    desc(&g.categoria);
+    string(&g.categoria);
     printf("Digite o valor que será colocado: \n");
     scanf("%lf",&g.valor);
     printf("Digite o dia: \n");
@@ -67,7 +67,7 @@ void menu(){
     int n;
     do{
         printf("----------Bem Vindo ao Gerenciador financeiro!!-----------\n");
-        printf("Digite a opção desejada: \n 0-Sair\n 1-Cadastar Usuario\n 2-Gerar relatorio do ultimo mes\n 3-Gerar relatorio dos ultimos 12 meses\n");
+        printf("Digite a opção desejada:\n 0-Sair\n 1-Cadastar Usuario\n 2-Gerar relatorio do ultimo mes\n 3-Gerar relatorio dos ultimos 12 meses\n");
         printf("\nDigite a opção desejada: ");
         scanf("%d",&n);
 
