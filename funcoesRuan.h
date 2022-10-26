@@ -1,23 +1,26 @@
-//estrutura para armazenarenamento de dados
+//estrutura de dados para armazenar os dados de cada mes do ano
 
-struct gerenciador_finaceiro{
-    char *nome[50];
-    char *sobrenome[50];
+struct gerenciador_finaceiro {
+    char *nome;
+    char *sobrenome;
+    int dia,mes,ano;
     double saldo;
     char *categoria[50];
     char *descricao[50];
     double valor;
-    int dia,mes,ano;
-    //char *formaPagamento[50];
-    //double valorPago;
+    //char forma_pagamento[20];
 };
+
+//funcao q chama o menu de opcoes
 
 void menu();
 
-void mes_anterior(int ano,int mes,int *ano_a,int *mes_a);
+//funcao q cadastra o saldo
 
-double receita();
+void menu();
 
-double despesas();
+double cadastrar_saldo();
 
-void relatorio(double total);
+void cadastrar_despesas();
+
+void gerar_relatorio();
