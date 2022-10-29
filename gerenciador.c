@@ -35,18 +35,18 @@ void arquivo_binário(){
     gerenciador g;
     FILE *arquivo;
     char nome_arquivo[50];
-    printf("Digite o mes desejado:");
+    printf("Digite o mes desejado:\n");
     scanf("%d", &g.mes);
-    printf("Digite o ano desejado:");
+    printf("Digite o ano desejado:\n");
     scanf("%d", &g.ano);
     sprintf(nome_arquivo, "financas/%04d%02d", g.ano, g.mes); //criar pasta financas para rodar o programa
-    printf("nome do arquivo: %s", nome_arquivo);
+    printf("nome do arquivo: %s\n", nome_arquivo);
     arquivo = fopen(nome_arquivo, "wb");
     if (arquivo == NULL) {
-        printf("\nErro ao abrir o arquivo");
+        printf("Erro ao abrir o arquivo\n");
     } else {
         fwrite(&g, sizeof(gerenciador), 1, arquivo);
-        printf("\nArquivo gravado com sucesso");
+        printf("Arquivo gravado com sucesso\n");
     }
     fclose(arquivo);
 }
@@ -56,15 +56,15 @@ void ler_binário(){
     gerenciador g;
     FILE *arquivo;
     char nome_arquivo[50];
-    printf("Digite o mes novamente:");
+    printf("Digite o mes novamente:\n");
     scanf("%d", &g.mes);
-    printf("Digite o ano :");
+    printf("Digite o ano :\n");
     scanf("%d", &g.ano);
     sprintf(nome_arquivo, "financas/%04d%02d", g.ano, g.mes);
-    printf("nome do arquivo: %s", nome_arquivo);
+    printf("nome do arquivo: %s\n", nome_arquivo);
     arquivo = fopen(nome_arquivo, "rb");
     if (arquivo == NULL) {
-        printf("\nErro ao abrir o arquivo");
+        printf("Erro ao abrir o arquivo\n");
     } else {
         while (fread(&g, sizeof(g), 1, arquivo)) {
             printf("Nome: %s %s\n", g.nome, g.sobrenome);
@@ -76,7 +76,7 @@ void ler_binário(){
             //total += relatorio_lido.valor;
         }
         //printf("Total a pagar: %.2f", g.saldo - total);
-        printf("\nArquivo lido com sucesso");
+        printf("Arquivo lido com sucesso\n");
     }
     fclose(arquivo);
 }
@@ -87,40 +87,40 @@ void passar_txt() {
     gerenciador g;
     FILE *arquivo_txt;
     char nome_arquivo_txt[50];
-    sprintf(nome_arquivo_txt, "financas/%04d%02d.txt", g.ano, g.mes);
+    sprintf(nome_arquivo_txt, "financas/%04d%02d", g.ano, g.mes);
     printf("nome do arquivo: %s\n", nome_arquivo_txt);
     arquivo_txt = fopen(nome_arquivo_txt, "a");
     if (arquivo_txt == NULL) {
-        printf("\nErro ao abrir o arquivo");
+        printf("Erro ao abrir o arquivo\n");
     } else {
         fprintf(arquivo_txt, "Nome: %s %s\n", g.nome, g.sobrenome);
         //fprintf(arquivo_txt, "Saldo: %.2f", g.saldo);
         fprintf(arquivo_txt, "Data: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
         fprintf(arquivo_txt, "Categoria: %s\n", g.categoria);
         fprintf(arquivo_txt, "Descricao: %s\n", g.descrição);
-        fprintf(arquivo_txt, "Valor: %.2f\n", g.valor);
+        fprintf(arquivo_txt, "Valor: R$%.2f\n", g.valor);
         //fprintf(arquivo_txt, "Total a pagar: %.2f", g.saldo - total);
-        printf("\nArquivo gravado com sucesso");
+        printf("\nArquivo gravado com sucesso\n");
     }
     fclose(arquivo_txt);
 }
 
 void relatorio_ultimoMes(){
     gerenciador g;
-    printf("Digite o mes novamente: ");
+    printf("Digite o mes novamente:\n");
     scanf("%d", &g.mes);
-    printf("Digite o ano navamente: ");
+    printf("Digite o ano navamente:\n");
     scanf("%d", &g.ano);
     FILE *arquivo;
     char nome_arquivo[50];
     sprintf(nome_arquivo, "financas/%04d%02d", g.ano, g.mes);
-    printf("nome do arquivo: %s", nome_arquivo);
+    printf("nome do arquivo: %s\n", nome_arquivo);
     arquivo = fopen(nome_arquivo, "rb");
     if (arquivo == NULL) {
-        printf("\nErro ao abrir o arquivo");
+        printf("\nErro ao abrir o arquivo\n");
     } else {
         while (fread(&g, sizeof(g), 1, arquivo)) {
-            printf("Nome: %s %s", g.nome, g.sobrenome);
+            printf("Nome: %s %s\n", g.nome, g.sobrenome);
             //printf("Saldo: %.2f", g.saldo);
             printf("Data: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
             printf("Categoria: %s\n", g.categoria);
@@ -129,7 +129,7 @@ void relatorio_ultimoMes(){
             //total += relatorio_lido.valor;
         }
         //printf("Total a pagar: %.2f", g.saldo - total);
-        printf("\nArquivo lido com sucesso");
+        printf("\nArquivo lido com sucesso\n");
     }
     fclose(arquivo);
 }
