@@ -65,7 +65,7 @@ void relatorioPorCat(){
     fclose(arquivo2);
 }
 
-void relatorio_ultimoMes(){
+void relatorio_ultimoMes(){ //nao ta printando todos as despesas do mes
     gerenciador g;
     printf("Digite a categoria novamente:\n");
     desc(&g.categoria);
@@ -82,17 +82,44 @@ void relatorio_ultimoMes(){
         printf("\nErro ao abrir o arquivo\n");
     } else {
         while (fread(&g, sizeof(g), 1, arquivo2)) {
-            //printf("Saldo: %.2f", g.saldo);
             printf("\nData: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
             printf("Categoria: %s\n", g.categoria);
             printf("Descricao: %s\n", g.descricao);
             printf("Valor: %.2f\n", g.valor);
-            //total += relatorio_lido.valor;
         }
-        //printf("Total a pagar: %.2f", g.saldo - total);
         printf("\nArquivo lido com sucesso\n");
     }
     fclose(arquivo2);
+}
+
+void relatorio_12meses(){
+    gerenciador g;
+    printf("Digite o mes novamente:\n");
+    scanf("%d", &g.mes);
+    printf("Digite o ano navamente:\n");
+    scanf("%d", &g.ano);
+    FILE *arquivo;
+    char nome_arquivo[50];
+    for (g.mes = 01; g.mes <= 12; g.mes++) {
+        sprintf(nome_arquivo, "financas/%04d%02d", g.ano, g.mes);
+        printf("\nnome do arquivo: %s\n", nome_arquivo);
+        arquivo = fopen(nome_arquivo, "rb");
+        if (arquivo == NULL) {
+            printf("\nErro ao abrir o arquivo\n");
+        } else {
+            while (fread(&g, sizeof(g), 1, arquivo)) {
+                //printf("Saldo: %.2f", g.saldo);
+                printf("\nData: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
+                printf("Categoria: %s\n", g.categoria);
+                printf("Descricao: %s\n", g.descricao);
+                printf("Valor: %.2f\n", g.valor);
+                //total += relatorio_lido.valor;
+            }
+            //printf("Total a pagar: %.2f", g.saldo - total);
+            printf("\nArquivo lido com sucesso\n");
+        }
+        fclose(arquivo);
+    }
 }
 
 void passar_txt() {
@@ -127,7 +154,7 @@ void txt_PorCat() {
         printf("\nErro ao abrir o arquivo\n");
     } else {
         //fprintf(arquivo_txt, "Saldo: %.2f", g.saldo);
-        fprintf(arquivo_txt2, "\nData: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
+        fprintf(arquivo_txt2, "Data: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
         fprintf(arquivo_txt2, "Categoria: %s\n", g.categoria);
         fprintf(arquivo_txt2, "Descricao: %s\n", g.descricao);
         fprintf(arquivo_txt2, "Valor: %.2f\n", g.valor);
@@ -142,7 +169,7 @@ void menu(){
     int n;
     do{
         printf("\n----------Bem Vindo ao Gerenciador financeiro!!-----------\n");
-        printf("Digite a opção desejada: \n 0-Sair\n 1-Cadastar Despesas\n 2-Gerar relatorio do ultimo mes\n 3-Gerar relatorio dos ultimos 12 meses\n");
+        printf("Digite a opção desejada: \n 0-Sair\n 1-Cadastar Usuario\n 2-Gerar relatorio do ultimo mes\n 3-Gerar relatorio dos ultimos 12 meses\n");
         printf("\nDigite a opção desejada: ");
         scanf("%d",&n);
 
@@ -163,10 +190,12 @@ void menu(){
             case 2:
                 printf("---------OPÇÃO 2 -----------\n");
                 relatorio_ultimoMes();
+                //ler_binário();
+                //passar_txt();
                 break;
             case 3:
-                printf("---------OPÇÃO 3 -----------\n");//precisa fazer ainda
-                passar_txt();
+                printf("---------OPÇÃO 3 -----------\n");
+                relatorio_12meses();
                 break;
             default:
                 printf("\033c");
