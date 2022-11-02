@@ -1,209 +1,173 @@
 #include <stdio.h>
-//#include <stdlib.h>
-
-//gerenciadoir financeiro
-
-//estrutura para armazenar as infomações de cada gasto
 
 typedef struct{
-    char categoria[50];
-    char descricao[50];
-    float valor;
+    char descricao[30];
+    char categoria[30];
+    double valor;
     int dia,mes,ano;
-}gerenciador_fincanceiro;
-
-//funcao para cadastrar a receita
-
-void receita(){
-    float saldo;
-    printf("Digite o saldo inicial: ");
-    scanf("%f", &saldo);
-    printf("Saldo cadastrado com sucesso!\n");
+}gerenciador;
+void desc(void *d){ //Funcao utilizada para receber varias strings do usuario
+    scanf(" %99[^\n]", d);
+}
+void cadastrar(){
+    gerenciador g;
+    printf("Digite a categoria: \n");
+    scanf("%s",g.categoria);
+    printf("Digite a descrição: \n");
+    scanf("%s",g.descricao);
+    printf("Digite o valor: \n");
+    scanf("%lf",&g.valor);
+    printf("Digite o dia: \n");
+    scanf("%d",&g.dia);
+    printf("Digite o mês: \n");
+    scanf("%d",&g.mes);
+    printf("Digite o ano: \n");
+    scanf("%d",&g.ano);
 }
 
-//funcao para cadastrar as despesas
-
-void despesa(){
-    gerenciador_fincanceiro g;
-    printf("Digite a categoria: ");
-    scanf("%s", g.categoria);
-    printf("Digite a descricao: ");
-    scanf("%s", g.descricao);
-    printf("Digite o valor: ");
-    scanf("%f", &g.valor);
-    printf("Digite o dia: ");
-    scanf("%d", &g.dia);
-    printf("Digite o mes: ");
+void arquivo_binário(){
+    gerenciador g;
+    FILE *arquivo;
+    char nome_arquivo[50];
+    printf("\n");
+    printf("Digite a categoria desejada:\n");
+    scanf("%s",g.categoria);
+    printf("Digite o mes desejado:\n");
     scanf("%d", &g.mes);
-    printf("Digite o ano: ");
+    printf("Digite o ano desejado:\n");
     scanf("%d", &g.ano);
-    printf("Despesa cadastrada com sucesso!\n");
-}
-
-//funcao para gerar um arquivo binario com as com a reiceita e as despesas
-
-void gerar_arquivo(){
-    FILE *arq = fopen("arquivo.bin", "wb");
-    gerenciador_fincanceiro g;
-    printf("Digite a categoria: ");
-    scanf("%s", g.categoria);
-    printf("Digite a descricao: ");
-    scanf("%s", g.descricao);
-    printf("Digite o valor: ");
-    scanf("%f", &g.valor);
-    printf("Digite o dia: ");
-    scanf("%d", &g.dia);
-    printf("Digite o mes: ");
-    scanf("%d", &g.mes);
-    printf("Digite o ano: ");
-    scanf("%d", &g.ano);
-
-    fwrite(&g, sizeof(gerenciador_fincanceiro), 1, arq);
-    fclose(arq);
-    printf("Arquivo gerado com sucesso!\n");
-}
-
-//funcao para ler o arquivo binario
-
-void ler_arquivo() {
-    FILE *arq2 = fopen("arquivo.bin", "rb");
-    gerenciador_fincanceiro g;
-    fread(&g, sizeof(gerenciador_fincanceiro), 1, arq2);
-    fclose(arq2);
-    printf("Categoria: %s", g.categoria);
-    printf("Descricao: %s", g.descricao);
-    printf("Valor: %.2f", g.valor);
-    printf("Data: %d/%d/%d", g.dia, g.mes, g.ano);
-}
-
-//funcao para gerar um arquivo txt com as com a reiceita e as despesas
-
-void gerar_txt() {
-    FILE *arq3 = fopen("arquivo.txt", "a");
-    gerenciador_fincanceiro g;
-    fprintf(arq3, "Categoria: %s", g.categoria);
-    fprintf(arq3, "Descricao: %s", g.descricao);
-    fprintf(arq3, "Valor: %.2f", g.valor);
-    fprintf(arq3, "Data: %d/%d/%d", g.dia, g.mes, g.ano);
-    fclose(arq3);
-}
-
-//funcao para ler o arquivo txt
-
-void ler_txt() {
-    FILE *arq4 = fopen("arquivo.txt", "r");
-    gerenciador_fincanceiro g;
-    fscanf(arq4, "Categoria: %s", g.categoria);
-    fscanf(arq4, "Descricao: %s", g.descricao);
-    fscanf(arq4, "Valor: %.2f", &g.valor);
-    fscanf(arq4, "Data: %d/%d/%d", &g.dia, &g.mes, &g.ano);
-    fclose(arq4);
-}
-
-//funcao para gerar relatorio de despesas do ultimo mes
-
-void relatorio_despesas_ultimoMes() {
-    FILE *arq5 = fopen("arquivo.bin", "rb");
-    gerenciador_fincanceiro g;
-    fread(&g, sizeof(gerenciador_fincanceiro), 1, arq5);
-    fclose(arq5);
-    printf("Categoria: %s", g.categoria);
-    printf("Descricao: %s", g.descricao);
-    printf("Valor: %.2f", g.valor);
-    printf("Data: %d/%d/%d", g.dia, g.mes, g.ano);
-}
-
-//funcao formas de pagamento
-
-void formas_pagamento() {
-    int opcao;
-    printf("1 - Dinheiro\n");
-    printf("2 - Cartao de credito\n");
-    printf("3 - Cartao de debito\n");
-    printf("4 - Cheque\n");
-    printf("Digite a opcao: ");
-    scanf("%d", &opcao);
-    switch(opcao) {
-        case 1:
-            printf("Dinheiro\n");
-            break;
-        case 2:
-            printf("Cartao de credito\n");
-            break;
-        case 3:
-            printf("Cartao de debito\n");
-            break;
-        case 4:
-            printf("Cheque\n");
-            break;
-        default:
-            printf("Opcao invalida\n");
+    sprintf(nome_arquivo, "financas/%04d%02d", g.ano, g.mes); //criar pasta financas para rodar o programa
+    printf("\nnome do arquivo: %s", nome_arquivo);
+    arquivo = fopen(nome_arquivo, "wb");
+    if (arquivo == NULL) {
+        printf("\nErro ao abrir o arquivo\n");
+    } else {
+        fwrite(&g, sizeof(gerenciador), 1, arquivo);
+        printf("\nArquivo gravado com sucesso\n");
     }
+    fclose(arquivo);
+
+    FILE *arquivo2;
+    sprintf(nome_arquivo, "financas/%s%04d%02d", g.categoria,g.ano, g.mes);
+    printf("nome do arquivo: %s", nome_arquivo);
+    arquivo2 = fopen(nome_arquivo, "wb");
+    if (arquivo2 == NULL) {
+        printf("\nErro ao abrir o arquivo\n");
+    } else {
+        fwrite(&g, sizeof(gerenciador), 1, arquivo2);
+        printf("\nArquivo gravado com sucesso\n");
+    }
+    fclose(arquivo2);
 }
 
-//funcao para pagamento em dinheiro
+void relatorio_ultimoMes(){
+    gerenciador g;
+    printf("Digite a categoria novamente:\n");
+    desc(&g.categoria);
+    printf("Digite o mes novamente:\n");
+    scanf("%d", &g.mes);
+    printf("Digite o ano navamente:\n");
+    scanf("%d", &g.ano);
+    FILE *arquivo2;
+    char nome_arquivo[50];
+    sprintf(nome_arquivo, "financas/%s%04d%02d", g.categoria,g.ano, g.mes);
+    printf("nome do arquivo: %s", nome_arquivo);
+    arquivo2 = fopen(nome_arquivo, "rb");
+    if (arquivo2 == NULL) {
+        printf("\nErro ao abrir o arquivo");
+    } else {
+        while (fread(&g, sizeof(g), 1, arquivo2)) {
+            //printf("Saldo: %.2f", g.saldo);
+            printf("Data: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
+            printf("Categoria: %s\n", g.categoria);
+            printf("Descricao: %s\n", g.descricao);
+            printf("Valor: %.2f\n", g.valor);
+            //total += relatorio_lido.valor;
+        }
+        //printf("Total a pagar: %.2f", g.saldo - total);
+        printf("\nArquivo lido com sucesso");
+    }
+    fclose(arquivo2);
+}
 
+void passar_txt() {
+    gerenciador g;
+    FILE *arquivo_txt;
+    char nome_arquivo_txt[50];
+    sprintf(nome_arquivo_txt, "financas/%04d%02d.txt", g.ano, g.mes);
+    printf("nome do arquivo: %s\n", nome_arquivo_txt);
+    arquivo_txt = fopen(nome_arquivo_txt, "a");
+    if (arquivo_txt == NULL) {
+        printf("\nErro ao abrir o arquivo");
+    } else {
+        //fprintf(arquivo_txt, "Saldo: %.2f", g.saldo);
+        fprintf(arquivo_txt, "Data: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
+        fprintf(arquivo_txt, "Categoria: %s\n", g.categoria);
+        fprintf(arquivo_txt, "Descricao: %s\n", g.descricao);
+        fprintf(arquivo_txt, "Valor: %.2f\n", g.valor);
+        //fprintf(arquivo_txt, "Total a pagar: %.2f", g.saldo - total);
+        printf("\nArquivo gravado com sucesso");
+    }
+    fclose(arquivo_txt);
 
+    FILE *arquivo_txt2;
+    sprintf(nome_arquivo_txt, "financas/%s%04d%02d.txt", g.categoria,g.ano, g.mes);
+    printf("nome do arquivo: %s\n", nome_arquivo_txt);
+    arquivo_txt2 = fopen(nome_arquivo_txt, "a");
+    if (arquivo_txt2 == NULL) {
+        printf("\nErro ao abrir o arquivo");
+    } else {
+        //fprintf(arquivo_txt, "Saldo: %.2f", g.saldo);
+        fprintf(arquivo_txt2, "Data: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
+        fprintf(arquivo_txt2, "Categoria: %s\n", g.categoria);
+        fprintf(arquivo_txt2, "Descricao: %s\n", g.descricao);
+        fprintf(arquivo_txt2, "Valor: %.2f\n", g.valor);
+        //fprintf(arquivo_txt, "Total a pagar: %.2f", g.saldo - total);
+        printf("\nArquivo gravado com sucesso");
+    }
+    fclose(arquivo_txt2);
+}
 
-//funcao do menu
-
-void menu() {
-    int opcao;
+void menu(){
+    int n;
     do{
         printf("----------Bem Vindo ao Gerenciador financeiro!!-----------\n");
-        printf("0 - Sair\n");
-        printf("1 - Cadastrar Saldo\n");
-        printf("2 - Cadastrar despesas\n");
-        printf("3 - Gerar relatorio do ultimo mes\n");
-        printf("4 - Gerar relatorio dos ultimos 12 meses\n");
-        printf("5 - Forma de pagamento\n");
+        printf("Digite a opção desejada: \n 0-Sair\n 1-Cadastar Usuario\n 2-Gerar relatorio do ultimo mes\n 3-Gerar relatorio dos ultimos 12 meses\n");
+        printf("\nDigite a opção desejada: ");
+        scanf("%d",&n);
 
-        printf("Digite a opção desejada: ");
-        scanf("%d", &opcao);
 
-    switch (opcao) 
-        {   
-        case 0:
-            printf("Saindo do programa...\n");
-            break;
-        case 1:
-            printf("\033c");
-            printf("Cadastrar Saldo\n");
-            receita();
-            break;
-        case 2:
-        // ** POR ALGUM MOTIVO AO DIGITAR AS DESPESAS ELE ESTÁ PERGUNTANDO 2 VEZES AUTOMATICAMENTE
-        // PODEMOS FAZER UMA OPÇÃO NESSA FUNÇÃO COLOCANDO QUANTAS DESPESAS SERÃO CADASTRADAS!!
-            printf("Cadastrar despesas\n");
-            despesa();
-            gerar_arquivo();
-            ler_arquivo();
-            gerar_txt();
-            break;
-        case 3:
-            printf("Gerar relatorio do ultimo mes\n");
-            ler_txt();
-            relatorio_despesas_ultimoMes();
-            break;
-        case 4:
-            printf("Gerar relatorio dos ultimos 12 meses\n");
-            break;
-        case 5:
-            printf("Forma de pagamento\n");
-            formas_pagamento();
-            break;
-        default:
-            printf("\033c");
-            printf("Opção inválida!\n");
-            return menu();
-    
-    } 
+        switch (n)
+        {
+            case 0:
+                printf("OK... Saindo...\n");
+                break;
+            case 1:
+                printf("---------OPÇÃO 1 -----------\n");
+                cadastrar();
+                arquivo_binário();
+                passar_txt();
+                break;
+            case 2:
+                printf("---------OPÇÃO 2 -----------\n");
+                relatorio_ultimoMes();
+                //ler_binário();
+                //passar_txt();
+                break;
+            case 3:
+                printf("---------OPÇÃO 3 -----------\n");
+                passar_txt();
+                break;
+            default:
+                printf("\033c");
+                printf("ERRO!! opção inválida, Digite uma opção válida!\n");
+                return menu();
+        }
     }
-    while (opcao != 0);
-        printf("----------------------------------------------------------\n");
-
+    while (n !=0);
+    printf("----------------------------------------------------------\n");
 }
-    int main() {
-        menu();
-    }
 
+int main(){
+    menu();
+}
