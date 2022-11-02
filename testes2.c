@@ -37,7 +37,7 @@ void arquivo_binário(){
     printf("Digite o ano desejado:\n");
     scanf("%d", &g.ano);
     sprintf(nome_arquivo, "financas/%04d%02d", g.ano, g.mes); //criar pasta financas para rodar o programa
-    printf("\nnome do arquivo: %s", nome_arquivo);
+    printf("\nnome do arquivo: %s\n", nome_arquivo);
     arquivo = fopen(nome_arquivo, "wb");
     if (arquivo == NULL) {
         printf("\nErro ao abrir o arquivo\n");
@@ -47,9 +47,14 @@ void arquivo_binário(){
     }
     fclose(arquivo);
 
+}
+
+void relatorioPorCat(){
+    gerenciador g;
     FILE *arquivo2;
+    char nome_arquivo[50];
     sprintf(nome_arquivo, "financas/%s%04d%02d", g.categoria,g.ano, g.mes);
-    printf("nome do arquivo: %s", nome_arquivo);
+    printf("\nnome do arquivo: %s\n", nome_arquivo);
     arquivo2 = fopen(nome_arquivo, "wb");
     if (arquivo2 == NULL) {
         printf("\nErro ao abrir o arquivo\n");
@@ -71,21 +76,21 @@ void relatorio_ultimoMes(){
     FILE *arquivo2;
     char nome_arquivo[50];
     sprintf(nome_arquivo, "financas/%s%04d%02d", g.categoria,g.ano, g.mes);
-    printf("nome do arquivo: %s", nome_arquivo);
+    printf("\nnome do arquivo: %s\n", nome_arquivo);
     arquivo2 = fopen(nome_arquivo, "rb");
     if (arquivo2 == NULL) {
-        printf("\nErro ao abrir o arquivo");
+        printf("\nErro ao abrir o arquivo\n");
     } else {
         while (fread(&g, sizeof(g), 1, arquivo2)) {
             //printf("Saldo: %.2f", g.saldo);
-            printf("Data: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
+            printf("\nData: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
             printf("Categoria: %s\n", g.categoria);
             printf("Descricao: %s\n", g.descricao);
             printf("Valor: %.2f\n", g.valor);
             //total += relatorio_lido.valor;
         }
         //printf("Total a pagar: %.2f", g.saldo - total);
-        printf("\nArquivo lido com sucesso");
+        printf("\nArquivo lido com sucesso\n");
     }
     fclose(arquivo2);
 }
@@ -95,44 +100,49 @@ void passar_txt() {
     FILE *arquivo_txt;
     char nome_arquivo_txt[50];
     sprintf(nome_arquivo_txt, "financas/%04d%02d.txt", g.ano, g.mes);
-    printf("nome do arquivo: %s\n", nome_arquivo_txt);
+    printf("\nnome do arquivo: %s\n", nome_arquivo_txt);
     arquivo_txt = fopen(nome_arquivo_txt, "a");
     if (arquivo_txt == NULL) {
-        printf("\nErro ao abrir o arquivo");
+        printf("\nErro ao abrir o arquivo\n");
     } else {
         //fprintf(arquivo_txt, "Saldo: %.2f", g.saldo);
-        fprintf(arquivo_txt, "Data: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
+        fprintf(arquivo_txt, "\nData: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
         fprintf(arquivo_txt, "Categoria: %s\n", g.categoria);
         fprintf(arquivo_txt, "Descricao: %s\n", g.descricao);
         fprintf(arquivo_txt, "Valor: %.2f\n", g.valor);
         //fprintf(arquivo_txt, "Total a pagar: %.2f", g.saldo - total);
-        printf("\nArquivo gravado com sucesso");
+        printf("\nArquivo gravado com sucesso\n");
     }
     fclose(arquivo_txt);
+}
 
+void txt_PorCat() {
+    gerenciador g;
     FILE *arquivo_txt2;
+    char nome_arquivo_txt[50];
     sprintf(nome_arquivo_txt, "financas/%s%04d%02d.txt", g.categoria,g.ano, g.mes);
-    printf("nome do arquivo: %s\n", nome_arquivo_txt);
+    printf("\nnome do arquivo: %s\n", nome_arquivo_txt);
     arquivo_txt2 = fopen(nome_arquivo_txt, "a");
     if (arquivo_txt2 == NULL) {
-        printf("\nErro ao abrir o arquivo");
+        printf("\nErro ao abrir o arquivo\n");
     } else {
         //fprintf(arquivo_txt, "Saldo: %.2f", g.saldo);
-        fprintf(arquivo_txt2, "Data: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
+        fprintf(arquivo_txt2, "\nData: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
         fprintf(arquivo_txt2, "Categoria: %s\n", g.categoria);
         fprintf(arquivo_txt2, "Descricao: %s\n", g.descricao);
         fprintf(arquivo_txt2, "Valor: %.2f\n", g.valor);
         //fprintf(arquivo_txt, "Total a pagar: %.2f", g.saldo - total);
-        printf("\nArquivo gravado com sucesso");
+        printf("\nArquivo gravado com sucesso\n");
     }
     fclose(arquivo_txt2);
+
 }
 
 void menu(){
     int n;
     do{
-        printf("----------Bem Vindo ao Gerenciador financeiro!!-----------\n");
-        printf("Digite a opção desejada: \n 0-Sair\n 1-Cadastar Usuario\n 2-Gerar relatorio do ultimo mes\n 3-Gerar relatorio dos ultimos 12 meses\n");
+        printf("\n----------Bem Vindo ao Gerenciador financeiro!!-----------\n");
+        printf("Digite a opção desejada: \n 0-Sair\n 1-Cadastar Despesas\n 2-Gerar relatorio do ultimo mes\n 3-Gerar relatorio dos ultimos 12 meses\n");
         printf("\nDigite a opção desejada: ");
         scanf("%d",&n);
 
@@ -146,16 +156,16 @@ void menu(){
                 printf("---------OPÇÃO 1 -----------\n");
                 cadastrar();
                 arquivo_binário();
+                relatorioPorCat();
                 passar_txt();
+                txt_PorCat();
                 break;
             case 2:
                 printf("---------OPÇÃO 2 -----------\n");
                 relatorio_ultimoMes();
-                //ler_binário();
-                //passar_txt();
                 break;
             case 3:
-                printf("---------OPÇÃO 3 -----------\n");
+                printf("---------OPÇÃO 3 -----------\n");//precisa fazer ainda
                 passar_txt();
                 break;
             default:
