@@ -86,7 +86,6 @@ void cadastrar(){
     fclose(arquivo_txt2);
 }
 
-
 void relatorio_ultimoMes() { //nao ta printando todos as despesas do mes
     gerenciador g,g2,g3;
     printf("Digite a categoria novamente:\n");
