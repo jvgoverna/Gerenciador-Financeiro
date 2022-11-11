@@ -113,8 +113,7 @@ void relatorio_ultimoMes() { //nao ta printando todos as despesas do mes
 
 void relatorio_12meses(){
     gerenciador g;
-    printf("Digite o mes novamente:\n");
-    scanf("%d", &g.mes);
+    g.mes = 01;
     printf("Digite o ano navamente:\n");
     scanf("%d", &g.ano);
     FILE *arquivo;
@@ -145,7 +144,7 @@ void menu(){
     int n;
     do{
         printf("\n----------Bem Vindo ao Gerenciador financeiro!!-----------\n");
-        printf("Digite a opção desejada: \n 0-Sair\n 1-Cadastar Usuario\n 2-Gerar relatorio do ultimo mes\n 3-Gerar relatorio dos ultimos 12 meses\n");
+        printf("Digite a opção desejada: \n 0-Sair\n 1-Cadastar Despesas\n 2-Gerar relatorio do ultimo mes\n 3-Gerar relatorio dos ultimos 12 meses\n");
         printf("\nDigite a opção desejada: ");
         scanf("%d",&n);
 
