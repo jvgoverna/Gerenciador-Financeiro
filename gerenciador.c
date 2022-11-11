@@ -87,7 +87,7 @@ void cadastrar(){
 }
 
 void relatorio_ultimoMes() { //nao ta printando todos as despesas do mes
-    gerenciador g,g2,g3;
+    gerenciador g;
     printf("Digite a categoria novamente:\n");
     desc(&g.categoria);
     printf("Digite o mes novamente:\n");
@@ -126,7 +126,7 @@ void relatorio_12meses(){
         if (arquivo == NULL) {
             printf("\nErro ao abrir o arquivo\n");
         } else {
-            while (fread(&g, sizeof(gerenciador), 1, arquivo)) {
+            while (fread(&g, sizeof(gerenciador), 1, arquivo) != 0) {
                 //printf("Saldo: %.2f", g.saldo);
                 printf("Data: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
                 printf("Categoria: %s\n", g.categoria);
