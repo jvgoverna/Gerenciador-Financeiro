@@ -1,0 +1,5 @@
+Data: 24/08/2001
+Categoria: d
+Descricao: d
+Valor: 63.63
+Valor Inicial do investimento: R$74.55

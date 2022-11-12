@@ -1,0 +1,5 @@
+Data: 22/02/2001
+Categoria: e
+Descricao: r
+Valor: 33.15
+Valor Inicial do investimento: R$15.15

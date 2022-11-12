@@ -1,0 +1,5 @@
+Data: 04/11/2001
+Categoria: zz
+Descricao: zz
+Valor: 96.99
+Valor Inicial do investimento: R$44.44

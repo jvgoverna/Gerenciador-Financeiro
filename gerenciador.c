@@ -9,13 +9,6 @@ typedef struct{
     double invest;
 }gerenciador;
 
-typedef struct{
-    double invest;
-    int diaAtualizado;
-    int mesAtualizado;
-    int anoAtualizado;
-}atualizar;
-
 void desc(void *d){ //Funcao utilizada para receber varias strings do usuario
     scanf(" %99[^\n]", d);
 }
@@ -36,6 +29,7 @@ void cadastrar(){
     scanf("%d",&g.mes);
     printf("Digite o ano: \n");
     scanf("%d",&g.ano);
+    printf("Digite o valor do Investimento inical: \n");
     scanf("%lf",&g.invest);
 
     sprintf(nome_arquivo, "financas/%04d%02d", g.ano, g.mes); //criar pasta financas para rodar o programa
@@ -97,27 +91,38 @@ void cadastrar(){
         printf("\nArquivo gravado com sucesso\n");
     }
     fclose(arquivo_txt2);
-}
 
-double ValInicialinvest(){  //Funcao para calcular o investimento por mes
-    atualizar J;
-    printf("Digite o dia do investimento: \n");
-    scanf("%d",&dia);
-    printf("Digite o mês do investimento: \n");
-    scanf("%d",&mes);
-    printf("Digite o ano do investimento: \n");
-    scanf("%d",&ano);
+    FILE *arquivo3;
 
-    double invest;
-    printf("Valor Inicial do investimento?\n");
-    scanf("%lf",&invest);
-    return invest;
-}
+    sprintf(nome_arquivo, "financas/%04d", g.ano);
+    printf("\nnome do arquivo: %s\n", nome_arquivo);
+    arquivo3 = fopen(nome_arquivo, "ab");
+    if (arquivo3 == NULL) {
+        printf("\nErro ao abrir o arquivo\n");
+    } else {
+        fwrite(&g, sizeof(gerenciador), 1, arquivo3);
+        printf("\nArquivo gravado com sucesso\n");
+    }
+    fclose(arquivo3);
 
-double atualizaInvest(double invest, int dia, int mes, int ano){ //Funcao para atualizar o investimento
-    double invest_atualizado;
-    invest_atualizado = invest + valor;
-    return invest_atualizado;
+    FILE *arquivo_txt3;
+
+    sprintf(nome_arquivo_txt, "financas/%04d.txt", g.ano);
+    printf("\nnome do arquivo: %s\n", nome_arquivo_txt);
+    arquivo_txt3 = fopen(nome_arquivo_txt, "a");
+    if (arquivo_txt3 == NULL) {
+        printf("\nErro ao abrir o arquivo\n");
+    } else {
+        //fprintf(arquivo_txt, "Saldo: %.2f", g.saldo);
+        fprintf(arquivo_txt3, "Data: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
+        fprintf(arquivo_txt3, "Categoria: %s\n", g.categoria);
+        fprintf(arquivo_txt3, "Descricao: %s\n", g.descricao);
+        fprintf(arquivo_txt3, "Valor: %.2f\n", g.valor);
+        fprintf(arquivo_txt3, "Valor Inicial do investimento: R$%.2f\n", g.invest);
+        //fprintf(arquivo_txt, "Total a pagar: %.2f", g.saldo - total);
+        printf("\nArquivo gravado com sucesso\n");
+    }
+    fclose(arquivo_txt3);
 }
 
 void relatorio_ultimoMes() { //nao ta printando todos as despesas do mes
@@ -141,37 +146,33 @@ void relatorio_ultimoMes() { //nao ta printando todos as despesas do mes
             printf("Categoria: %s\n", g.categoria);
             printf("Descricao: %s\n", g.descricao);
             printf("Valor: %.2f\n", g.valor);
+            printf("Valor Inicial do investimento: R$%.2f\n", g.invest);
         }
     }
+    fclose(arquivo2);
 }
 
 void relatorio_12meses(){
     gerenciador g;
-    g.mes = 01;
     printf("Digite o ano novamente:\n");
     scanf("%d", &g.ano);
-    FILE *arquivo;
+    FILE *arquivo3;
     char nome_arquivo[50];
-    for (g.mes = 01; g.mes <= 12; g.mes++) {
-        sprintf(nome_arquivo, "financas/%04d%02d", g.ano, g.mes);
-        printf("\nnome do arquivo: %s\n", nome_arquivo);
-        arquivo = fopen(nome_arquivo, "rb");
-        if (arquivo == NULL) {
-            printf("\nErro ao abrir o arquivo\n");
-        } else {
-            while (fread(&g, sizeof(gerenciador), 1, arquivo) != 0) {
-                //printf("Saldo: %.2f", g.saldo);
-                printf("Data: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
-                printf("Categoria: %s\n", g.categoria);
-                printf("Descricao: %s\n", g.descricao);
-                printf("Valor: %.2f\n", g.valor);
-                //total += relatorio_lido.valor;
-            }
-            //printf("Total a pagar: %.2f", g.saldo - total);
-            printf("\nArquivo lido com sucesso\n");
+    sprintf(nome_arquivo, "financas/%04d", g.ano);
+    printf("\nnome do arquivo: %s\n", nome_arquivo);
+    arquivo3 = fopen(nome_arquivo, "rb");
+    if (arquivo3 == NULL) {
+        printf("\nErro ao abrir o arquivo\n");
+    } else {
+        while (fread(&g, sizeof(gerenciador), 1, arquivo3) != 0) {
+            printf("Data: %02d/%02d/%04d\n", g.dia, g.mes, g.ano);
+            printf("Categoria: %s\n", g.categoria);
+            printf("Descricao: %s\n", g.descricao);
+            printf("Valor: %.2f\n", g.valor);
+            printf("Valor Inicial do investimento: R$%.2f\n", g.invest);
         }
-        fclose(arquivo);
     }
+    fclose(arquivo3);
 }
 
 //POUPANÇA
@@ -204,7 +205,7 @@ void menu(){
                 break;
             case 4:
                 printf("---------OPÇÃO 4 -----------\n");
-                ValInicialinvest();
+                //ValInicialinvest();
                 break;
             case 5:
                 printf("---------OPÇÃO 5 -----------\n");

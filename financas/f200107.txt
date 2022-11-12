@@ -1,0 +1,5 @@
+Data: 27/07/2001
+Categoria: f
+Descricao: f
+Valor: 6.65
+Valor Inicial do investimento: R$78.74

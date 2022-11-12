@@ -1,0 +1,5 @@
+Data: 14/06/2001
+Categoria: j
+Descricao: j
+Valor: 74.41
+Valor Inicial do investimento: R$45.46

@@ -1,0 +1,5 @@
+Data: 22/09/2001
+Categoria: n
+Descricao: n
+Valor: 69.58
+Valor Inicial do investimento: R$74.44
