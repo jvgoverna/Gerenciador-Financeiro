@@ -86,7 +86,7 @@ void cadastrar(){
 }
 
 
-void relatorio_ultimoMes() { //nao ta printando todos as despesas do mes
+void relatorio_ultimoMes() { 
     gerenciador g;
     printf("Digite a categoria novamente:\n");
     desc(&g.categoria);
