@@ -1,5 +1,0 @@
-Data: 11/10/2001
-Categoria: ll
-Descricao: ll
-Valor: 33.33
-Valor Inicial do investimento: R$88.88

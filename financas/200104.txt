@@ -1,5 +1,0 @@
-Data: 25/04/2001
-Categoria: g
-Descricao: h
-Valor: 2.22
-Valor Inicial do investimento: R$89.78

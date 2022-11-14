@@ -1,5 +1,0 @@
-Data: 06/12/2001
-Categoria: bb
-Descricao: bb
-Valor: 4.50
-Valor Inicial do investimento: R$86.85

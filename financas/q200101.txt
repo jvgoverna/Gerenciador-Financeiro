@@ -1,5 +1,0 @@
-Data: 01/01/2001
-Categoria: q
-Descricao: w
-Valor: 11.14
-Valor Inicial do investimento: R$100.15
