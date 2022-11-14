@@ -6,7 +6,6 @@ typedef struct{
     char categoria[30];
     double valor;
     int dia,mes,ano;
-    double invest;
 }gerenciador;
 
 typedef struct{
@@ -14,6 +13,7 @@ typedef struct{
     int diaAtualizado;
     int mesAtualizado;
     int anoAtualizado;
+    double arquivoInvFinal;
 }atualizar;
 
 void desc(void *d){ //Funcao utilizada para receber varias strings do usuario
@@ -36,7 +36,6 @@ void cadastrar(){
     scanf("%d",&g.mes);
     printf("Digite o ano: \n");
     scanf("%d",&g.ano);
-    scanf("%lf",&g.invest);
 
     sprintf(nome_arquivo, "financas/%04d%02d", g.ano, g.mes); //criar pasta financas para rodar o programa
     printf("\nnome do arquivo: %s\n", nome_arquivo);
@@ -62,7 +61,6 @@ void cadastrar(){
         fprintf(arquivo_txt, "Categoria: %s\n", g.categoria);
         fprintf(arquivo_txt, "Descricao: %s\n", g.descricao);
         fprintf(arquivo_txt, "Valor: %.2f\n", g.valor);
-        fprintf(arquivo_txt, "Valor Inicial do investimento: R$%.2f\n", g.invest);
         //fprintf(arquivo_txt, "Total a pagar: %.2f", g.saldo - total);
         printf("\nArquivo gravado com sucesso\n");
     }
@@ -100,24 +98,76 @@ void cadastrar(){
 }
 
 double ValInicialinvest(){  //Funcao para calcular o investimento por mes
-    atualizar J;
-    printf("Digite o dia do investimento: \n");
-    scanf("%d",&dia);
-    printf("Digite o mês do investimento: \n");
-    scanf("%d",&mes);
-    printf("Digite o ano do investimento: \n");
-    scanf("%d",&ano);
+    gerenciador g;
+    atualizar i;
+    double taxa = 0.015;
 
-    double invest;
+    FILE *arquivoInv;
+    char nome_arquivo[50];
+    FILE *arquivoInv_txt;
+    char nome_arquivo_txt[50];
+
+    printf("Digite o dia do investimento: \n");
+    scanf("%d",&i.diaAtualizado);
+    printf("Digite o mês do investimento: \n");
+    scanf("%d",&i.mesAtualizado);
+    printf("Digite o ano do investimento: \n");
+    scanf("%d",&i.anoAtualizado);
     printf("Valor Inicial do investimento?\n");
-    scanf("%lf",&invest);
-    return invest;
+    scanf("%lf",&i.invest);
+
+    sprintf(nome_arquivo, "financas/investimentos%04d", i.anoAtualizado); //criar pasta financas para rodar o programa
+    printf("\nnome do arquivo: %s\n", nome_arquivo);
+    arquivoInv = fopen(nome_arquivo, "ab");
+    if (arquivoInv == NULL) {
+        printf("\nErro ao abrir o arquivo\n");
+    } else {
+        fwrite(&i, sizeof(gerenciador), 1, arquivoInv);
+        printf("\nArquivo gravado com sucesso\n");
+    }
+    fclose(arquivoInv);
+
+    sprintf(nome_arquivo_txt, "financas/investimentos%04d.txt", i.anoAtualizado);
+    printf("\nnome do arquivo: %s\n", nome_arquivo_txt);
+    arquivoInv_txt = fopen(nome_arquivo_txt, "a");
+    if (arquivoInv_txt == NULL) {
+        printf("\nErro ao abrir o arquivo\n");
+    } else {
+        fprintf(arquivoInv_txt, "Data: %02d/%02d/%04d\n", i.diaAtualizado, i.mesAtualizado, i.anoAtualizado);
+        fprintf(arquivoInv_txt, "Valor Inicial do investimento: R$%.2f\n", i.invest);
+        printf("\nArquivo gravado com sucesso\n");
+    }
+    fclose(arquivoInv_txt);
+
+    i.arquivoInvFinal = i.invest * pow((1 + taxa), 12);
+    
+    return i.arquivoInvFinal;
 }
 
-double atualizaInvest(double invest, int dia, int mes, int ano){ //Funcao para atualizar o investimento
-    double invest_atualizado;
-    invest_atualizado = invest + valor;
-    return invest_atualizado;
+void atualizaInvest(){ //Funcao para atualizar o investimento
+    double valorINV = ValInicialinvest();
+    FILE *arquivoInvFinal;
+    char nome_arquivo[50];
+    FILE *arquivoInvFinal_txt;
+    char nome_arquivo_txt[50];
+
+    atualizar i;
+
+    sprintf(nome_arquivo, "financas/investimentos%04d", i.anoAtualizado); //criar pasta financas para rodar o programa
+    printf("\nnome do arquivo: %s\n", nome_arquivo);
+    arquivoInvFinal = fopen(nome_arquivo, "ab");
+    if (arquivoInvFinal == NULL) {
+        printf("\nErro ao abrir o arquivo\n");
+    } else {
+        fwrite(&i, sizeof(gerenciador), 1, arquivoInvFinal);
+        printf("\nArquivo gravado com sucesso\n");
+    }
+    fclose(arquivoInvFinal);
+
+    
+
+
+
 }
 
 void relatorio_ultimoMes() { //nao ta printando todos as despesas do mes
