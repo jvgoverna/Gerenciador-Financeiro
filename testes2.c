@@ -11,19 +11,22 @@ typedef struct {
 
 typedef struct {
     float valor;
-    int dia,mes,ano;
+    int diap,mesp,anop;
     float juros;
     float rendimento;
+    float valor_final;
 }poupanca;
 
 //funcao de cadastrar as despesas
-
+void desc(void *d){ //Funcao utilizada para receber varias strings do usuario
+    scanf(" %99[^\n]", d);
+}
 void cadastrar(){
     gerenciador despesa;
     printf("Digite a descricao da despesa:\n");
-    scanf("%s",despesa.descricao);
+    desc(&despesa.descricao);
     printf("Digite a categoria da despesa:\n");
-    scanf("%s",despesa.categoria);
+    desc(&despesa.categoria);
     printf("Digite o preco da despesa:\n");
     scanf("%f",&despesa.preco);
     printf("Digite o dia da despesa:\n");
@@ -32,7 +35,7 @@ void cadastrar(){
     scanf("%d",&despesa.mes);
     printf("Digite o ano da despesa:\n");
     scanf("%d",&despesa.ano);
-    despesa.total += despesa.preco;
+    despesa.total = despesa.total + despesa.preco;
 
     FILE *arq;
     char nome_arq[30];
@@ -56,9 +59,9 @@ void cadastrar(){
         printf("Erro ao abrir o arquivo");
         return;
     } else{
-        fprintf(arq_txt, "\nDescricao: %s\n", despesa.descricao);
+        fprintf(arq_txt, "Descricao: %s\n", despesa.descricao);
         fprintf(arq_txt, "Categoria: %s\n", despesa.categoria);
-        fprintf(arq_txt, "Preco: %.2lf\n", despesa.preco);
+        fprintf(arq_txt, "Preco: %.2f\n", despesa.preco);
         fprintf(arq_txt, "Data: %02d/%02d/%04d\n", despesa.dia,despesa.mes,despesa.ano);
     }
     fclose(arq_txt);
@@ -85,7 +88,7 @@ void cadastrar(){
     } else{
         fprintf(arq2_txt, "Descricao: %s\n", despesa.descricao);
         fprintf(arq2_txt, "Categoria: %s\n", despesa.categoria);
-        fprintf(arq2_txt, "Preco: %.2lf\n", despesa.preco);
+        fprintf(arq2_txt, "Preco: %.2f\n", despesa.preco);
         fprintf(arq2_txt, "Data: %02d/%02d/%04d\n", despesa.dia,despesa.mes,despesa.ano);
     }
     fclose(arq2_txt);
@@ -112,7 +115,7 @@ void cadastrar(){
     } else{
         fprintf(arq3_txt, "Descricao: %s\n", despesa.descricao);
         fprintf(arq3_txt, "Categoria: %s\n", despesa.categoria);
-        fprintf(arq3_txt, "Preco: %.2lf\n", despesa.preco);
+        fprintf(arq3_txt, "Preco: %.2f\n", despesa.preco);
         fprintf(arq3_txt, "Data: %02d/%02d/%04d\n", despesa.dia,despesa.mes,despesa.ano);
     }
     fclose(arq3_txt);
@@ -222,95 +225,117 @@ void cadastrar_poupanca(){
     printf("Digite o valor: ");
     scanf("%f", &p.valor);
     printf("Digite o dia: ");
-    scanf("%d", &p.dia);
+    scanf("%d", &p.diap);
     printf("Digite o mes: ");
-    scanf("%d", &p.mes);
+    scanf("%d", &p.mesp);
     printf("Digite o ano: ");
-    scanf("%d", &p.ano);
+    scanf("%d", &p.anop);
 
-    sprintf(nome_arq,"financas/poupanca-%04d-%02d", p.ano,p.mes);
+    //calculo do rendimento anual da poupança através da taxa selic 
+
+    float rendimento = 0.0;
+    float taxa = 0.05;
+    float valor = p.valor;
+    int i = 0;
+
+    for(i = 0; i < 12; i++){
+        rendimento = valor * taxa;
+        valor = valor + rendimento;
+    }
+
+    p.rendimento = rendimento;
+    float valor_final = 0.0;
+
+    valor_final = p.valor + p.rendimento;
+    p.valor_final = valor_final;
+
+    sprintf(nome_arq,"financas/poupanca-%04d", p.anop);
     arq_poupanca = fopen(nome_arq, "ab");
     if (arq_poupanca == NULL) {
         printf("Erro ao abrir o arquivo");
         return;
     } else{
         fwrite(&p, sizeof(poupanca), 1, arq_poupanca);
-        printf("Poupanca cadastrada com sucesso!\n");
     }
     fclose(arq_poupanca);
 
     FILE *arq_poupanca_txt;
 
-    sprintf(nome_arq, "financas/poupanca-%04d-%02d.txt", p.ano,p.mes);
+    sprintf(nome_arq, "financas/poupanca-%04d.txt", p.anop);
     arq_poupanca_txt = fopen(nome_arq, "a");
     if (arq_poupanca_txt == NULL) {
         printf("Erro ao abrir o arquivo");
         return;
     } else{
-        fprintf(arq_poupanca_txt, "Valor Inicial: %.2f\n", p.valor);
-        fprintf(arq_poupanca_txt, "Data: %02d/%02d/%04d\n", p.dia,p.mes,p.ano);
-        printf("Poupanca cadastrada com sucesso!\n");
+        fprintf(arq_poupanca_txt, "\nValor Inicial: %.2f\n", p.valor);
+        fprintf(arq_poupanca_txt, "Data: %02d/%02d/%04d\n", p.diap,p.mesp,p.anop);
     }
     fclose(arq_poupanca_txt);
+
+    sprintf(nome_arq, "financas/poupanca-%04d.txt", p.anop);
+    arq_poupanca_txt = fopen(nome_arq, "a");
+    if (arq_poupanca_txt == NULL) {
+        printf("Erro ao abrir o arquivo");
+        return;
+    } else{
+        fprintf(arq_poupanca_txt, "Rendimento após 12 meses será de: %.2lf\n", p.rendimento);
+    }
+    fclose(arq_poupanca_txt);
+
 }
 
-void relatorio_poupanca(){
+void rendimento_poupanca_12meses(){
     poupanca p;
     FILE *arq_poupanca;
     char nome_arq[30];
 
-    printf("Digite o mes: ");
-    scanf("%d", &p.mes);
     printf("Digite o ano: ");
-    scanf("%d", &p.ano);
+    scanf("%d", &p.anop);
 
-    sprintf(nome_arq,"financas/poupanca-%04d-%02d", p.ano,p.mes);
+    sprintf(nome_arq, "financas/poupanca-%04d", p.anop);
     arq_poupanca = fopen(nome_arq, "rb");
     if (arq_poupanca == NULL) {
         printf("Erro ao abrir o arquivo");
         return;
     } else{
         while(fread(&p, sizeof(poupanca), 1, arq_poupanca) != 0){
-            printf("Valor Inicial: %.2f\n", p.valor);
-            printf("Data: %02d/%02d/%04d", p.dia,p.mes,p.ano);
+            printf("Rendimento após 12 meses será de: %.2lf\n", p.rendimento);
+            printf("Valor final será de: %.2lf\n",p.valor_final);
         }
     }
     fclose(arq_poupanca);
-
 }
 
-void relatorio_poupanca_12meses(){
+void val_Fim_poup(){
     poupanca p;
-    float taxa = 0.05;
-    float montante = p.valor * pow((1 + taxa), 12);
-    p.juros = montante - p.valor;
-    p.rendimento = p.valor + p.juros;
-
     FILE *arq_poupanca;
     char nome_arq[30];
 
-    sprintf(nome_arq, "financas/poupanca-%04d-%02d", p.ano,p.mes);
-    arq_poupanca = fopen(nome_arq, "ab");
+    printf("Digite o ano: ");
+    scanf("%d", &p.anop);
+
+    sprintf(nome_arq, "financas/poupanca-%04d", p.anop);
+    arq_poupanca = fopen(nome_arq, "rb");
     if (arq_poupanca == NULL) {
         printf("Erro ao abrir o arquivo");
         return;
     } else{
-        fwrite(&p, sizeof(poupanca), 1, arq_poupanca);
-        printf("Poupanca cadastrada com sucesso!\n");
+        while(fread(&p, sizeof(poupanca), 1, arq_poupanca) != 0){
+            printf("\nValor final será de: %.2lf\n",p.valor_final);
+        }
     }
     fclose(arq_poupanca);
 
     FILE *arq_poupanca_txt;
+    char nome_arq_txt[30];
 
-    sprintf(nome_arq, "financas/poupanca-%04d-%02d.txt", p.ano,p.mes);
-    printf("Nome do arquivo: %s\n", nome_arq);
-    arq_poupanca_txt = fopen(nome_arq, "a");
+    sprintf(nome_arq_txt, "financas/poupanca-%04d.txt", p.anop);
+    arq_poupanca_txt = fopen(nome_arq_txt, "a");
     if (arq_poupanca_txt == NULL) {
         printf("Erro ao abrir o arquivo");
         return;
-    } else {
-        fprintf(arq_poupanca_txt, "Rendimento após 12 meses: %.2f", p.rendimento);
-        printf("Poupanca cadastrada com sucesso!\n");
+    } else{
+        fprintf(arq_poupanca_txt, "Valor final será de: %.2lf\n",p.valor_final);
     }
     fclose(arq_poupanca_txt);
 }
@@ -319,22 +344,26 @@ void poupancas(){
     int opcao;
         do{
             printf("\n-----------Poupança-----------\n");
+            printf("0 - Sair\n");
             printf("1 - Cadastrar Poupança\n");
-            printf("2 - Relatório de Poupança\n");
-            printf("3 - Relatório de Poupança após 12 meses\n");
+            printf("2 - Rendimento da Poupança após 12 meses\n");
+            printf("3 - Exibir Valor final\n");
             printf("-------------------------------\n");
             printf("Digite a opção desejada:\n");
             scanf("%d", &opcao);
 
             switch(opcao){
+                case 0:
+                    printf("OK... Saindo...");
+                    break;
                 case 1:
                     cadastrar_poupanca();
                     break;
                 case 2:
-                    relatorio_poupanca();
+                    rendimento_poupanca_12meses();
                     break;
                 case 3:
-                    relatorio_poupanca_12meses();
+                    val_Fim_poup();
                     break;
                 default:
                     printf("\033c");
