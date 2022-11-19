@@ -21,13 +21,15 @@ typedef struct {
     float valor_final;
 }poupanca;
 
-void desc(void *d){ //Funcao utilizada para receber varias strings do usuario
+//Funcao utilizada para receber varias strings do usuario
+
+void desc(void *d){ 
     scanf(" %99[^\n]", d);
 }
 
-//funcao de cadastrar as despesas e escrever os dados no arquivo binario e txt
+//funcao de cadastrar as despesas e escrever os dados no arquivo binario e passar para o txt
 
-void cadastrar(){
+void cadastrar(){ 
     gerenciador despesa;
     printf("Digite a descricao da despesa:\n");
     desc(&despesa.descricao);
@@ -43,7 +45,7 @@ void cadastrar(){
     scanf("%d",&despesa.ano);
     despesa.total = despesa.total + despesa.preco;
 
-    FILE *arq;
+    FILE *arq; // arquivo binario que armazena despesas e o ano inseridos.
     char nome_arq[30];
 
     sprintf(nome_arq, "financas/%04d-%02d", despesa.ano,despesa.mes);
@@ -56,7 +58,7 @@ void cadastrar(){
     }
     fclose(arq);
 
-    FILE *arq_txt;
+    FILE *arq_txt; // arquivo txt que armazena despesas e o ano inseridos.
     char nome_arq_txt[30];
 
     sprintf(nome_arq_txt, "financas/%04d-%02d.txt", despesa.ano,despesa.mes);
@@ -68,11 +70,12 @@ void cadastrar(){
         fprintf(arq_txt, "Descricao: %s\n", despesa.descricao);
         fprintf(arq_txt, "Categoria: %s\n", despesa.categoria);
         fprintf(arq_txt, "Preco: %.2f\n", despesa.preco);
-        fprintf(arq_txt, "Data: %02d/%02d/%04d\n\n", despesa.dia,despesa.mes,despesa.ano);
+        fprintf(arq_txt, "Data: %02d/%02d/%04d\n", despesa.dia,despesa.mes,despesa.ano);
+        fprintf(arq_txt, "\n");
     }
     fclose(arq_txt);
 
-    FILE *arq2;
+    FILE *arq2; // arquivo binário que armazena despesas e o ano inseridos por cateoria.
 
     sprintf(nome_arq,"financas/%s-%04d-%02d", despesa.categoria,despesa.ano,despesa.mes);
     arq2 = fopen(nome_arq, "ab");
@@ -84,7 +87,7 @@ void cadastrar(){
     }
     fclose(arq2);
 
-    FILE *arq2_txt;
+    FILE *arq2_txt; // arquivo txt que armazena despesas e o ano inseridos por cateoria.
 
     sprintf(nome_arq_txt, "financas/%s-%04d-%02d.txt", despesa.categoria,despesa.ano,despesa.mes);
     arq2_txt = fopen(nome_arq_txt, "a");
@@ -96,10 +99,13 @@ void cadastrar(){
         fprintf(arq2_txt, "Categoria: %s\n", despesa.categoria);
         fprintf(arq2_txt, "Preco: %.2f\n", despesa.preco);
         fprintf(arq2_txt, "Data: %02d/%02d/%04d\n\n", despesa.dia,despesa.mes,despesa.ano);
+        fprintf(arq_txt, "\n");
+
     }
     fclose(arq2_txt);
 
-    FILE *arq3;
+    FILE *arq3; // arquivo binário que armazena as despesas por ano.
+
 
     sprintf(nome_arq,"financas/%04d", despesa.ano);
     arq3 = fopen(nome_arq, "ab");
@@ -111,7 +117,7 @@ void cadastrar(){
     }
     fclose(arq3);
 
-    FILE *arq3_txt;
+    FILE *arq3_txt; // arquivo txt que armazena as despesas por ano.
 
     sprintf(nome_arq_txt, "financas/%04d.txt", despesa.ano);
     arq3_txt = fopen(nome_arq_txt, "a");
@@ -123,10 +129,12 @@ void cadastrar(){
         fprintf(arq3_txt, "Categoria: %s\n", despesa.categoria);
         fprintf(arq3_txt, "Preco: %.2f\n", despesa.preco);
         fprintf(arq3_txt, "Data: %02d/%02d/%04d\n", despesa.dia,despesa.mes,despesa.ano);
+        fprintf(arq_txt, "\n");
+
     }
     fclose(arq3_txt);
 
-    FILE *arq_total;
+    FILE *arq_total; // arquvo binário que armazena o total gasto nos 12 meses.
 
     sprintf(nome_arq,"financas/total");
     arq_total = fopen(nome_arq, "wb");
@@ -138,7 +146,7 @@ void cadastrar(){
     }
     fclose(arq_total);
 
-    FILE *arq_total_txt;
+    FILE *arq_total_txt; // arquvo txt que armazena o total gasto nos 12 meses.
 
     sprintf(nome_arq_txt, "financas/total.txt");
     arq_total_txt = fopen(nome_arq_txt, "w");
@@ -150,6 +158,8 @@ void cadastrar(){
     }
     fclose(arq_total_txt);
 }
+
+//Função que exibe o exibe o relatório de gastos do mês anterior ao atual
 
 void relatorio_ultimoMes(){
     gerenciador despesa;
@@ -179,6 +189,8 @@ void relatorio_ultimoMes(){
     fclose(arq2);
 }
 
+//Função que exibe o relatorio de gasto no período de 12 meses
+
 void relatorio_12Meses(){
     gerenciador despesa;
     FILE *arq3;
@@ -203,6 +215,8 @@ void relatorio_12Meses(){
     fclose(arq3);
 }
 
+//Funcao que exibe o total gasto com as despesas
+
 void total(){
     gerenciador despesa;
     FILE *arq_total;
@@ -215,13 +229,13 @@ void total(){
         return;
     } else{
         while(fread(&despesa, sizeof(gerenciador), 1, arq_total) != 0){
-            printf("Total Gasto: %.2f\n", despesa.total);
+            printf("Total Gasto: R$%.2f\n", despesa.total);
         }
     }
     fclose(arq_total);
 }
 
-//POUPANÇA
+//Função que cadastra os valores e datas de inicio da Poupança
 
 void cadastrar_poupanca(){
     poupanca p;
@@ -237,7 +251,7 @@ void cadastrar_poupanca(){
     printf("Digite o ano: ");
     scanf("%d", &p.anop);
 
-    //calculo do rendimento anual da poupança através da taxa selic 
+    //calculo do rendimento anual da poupança através da taxa de 5% ao ano
 
     float rendimento = 0.0;
     float taxa = 0.05;
@@ -255,6 +269,8 @@ void cadastrar_poupanca(){
     valor_final = p.valor + p.rendimento;
     p.valor_final = valor_final;
 
+    //arquivo binario que armazena as informações da poupança
+
     sprintf(nome_arq,"financas/poupanca-%04d", p.anop);
     arq_poupanca = fopen(nome_arq, "ab");
     if (arq_poupanca == NULL) {
@@ -267,6 +283,8 @@ void cadastrar_poupanca(){
 
     FILE *arq_poupanca_txt;
 
+    //arquivo txt que armazena as informações da poupança
+
     sprintf(nome_arq, "financas/poupanca-%04d.txt", p.anop);
     arq_poupanca_txt = fopen(nome_arq, "a");
     if (arq_poupanca_txt == NULL) {
@@ -275,10 +293,12 @@ void cadastrar_poupanca(){
     } else{
         fprintf(arq_poupanca_txt, "Valor Inicial: %.2f\n", p.valor);
         fprintf(arq_poupanca_txt, "Data: %02d/%02d/%04d\n", p.diap,p.mesp,p.anop);
+      fprintf(arq_poupanca_txt, "Rendimento após 12 meses será de: %.2lf\n", p.rendimento);
     }
     fclose(arq_poupanca_txt);
-
 }
+
+// Função que exibe o rendimento da poupança em um período de 12 meses. E escreve o rendimento dos 12 meses no arquivo txt . 
 
 void rendimento_poupanca_12meses(){
     poupanca p;
@@ -288,16 +308,6 @@ void rendimento_poupanca_12meses(){
     printf("Digite o ano: ");
     scanf("%d", &p.anop);
 
-    sprintf(nome_arq, "financas/poupanca-%04d.txt", p.anop);
-      arq_poupanca_txt = fopen(nome_arq, "a");
-      if (arq_poupanca_txt == NULL) {
-          printf("Erro ao abrir o arquivo");
-          return;
-      } else{
-          fprintf(arq_poupanca_txt, "Rendimento após 12 meses será de: %.2lf\n", p.rendimento);
-      }
-      fclose(arq_poupanca_txt);
-
     sprintf(nome_arq, "financas/poupanca-%04d", p.anop);
     arq_poupanca = fopen(nome_arq, "rb");
     if (arq_poupanca == NULL) {
@@ -306,11 +316,12 @@ void rendimento_poupanca_12meses(){
     } else{
         while(fread(&p, sizeof(poupanca), 1, arq_poupanca) != 0){
             printf("Rendimento após 12 meses será de: %.2lf\n", p.rendimento);
-            printf("Valor final será de: %.2lf\n",p.valor_final);
         }
     }
     fclose(arq_poupanca);
 }
+
+//Função que exibe o valor final da poupança.
 
 void val_Fim_poup(){
     poupanca p;
@@ -346,6 +357,8 @@ void val_Fim_poup(){
     fclose(arq_poupanca_txt);
 }
 
+// Função que inicializa a poupança.
+
 void poupancas(){
     int opcao;
         do{
@@ -372,15 +385,16 @@ void poupancas(){
                     val_Fim_poup();
                     break;
                 default:
-                    printf("\033c");
+                    //printf("\033c");
                     printf("ERRO!! opção inválida, Digite uma opção válida!\n");
                     break;
             }
     }
     while(opcao != 0);
-    printf("----------------------------------------------------------\n");
+    printf("\n----------------------------------------------------------\n");
 }
 
+//Função que inicializa o menu de opções do gerenciador financeiro.
 
 void menu(){
     int n;
@@ -413,7 +427,7 @@ void menu(){
                 poupancas();
                 break;
             default:
-                printf("\033c");
+                //printf("\033c");
                 printf("ERRO!! opção inválida, Digite uma opção válida!\n");
                 return menu();
         }
@@ -421,6 +435,9 @@ void menu(){
     while(n != 0);
     printf("----------------------------------------------------------\n");
 }
+
+//Função que inicia o programa.
+
 int main(){
     menu();
     return 0;
