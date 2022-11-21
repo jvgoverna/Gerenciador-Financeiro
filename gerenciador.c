@@ -104,8 +104,6 @@ void cadastrar(){
         fprintf(arq2_txt, "Categoria: %s\n", despesa.categoria);
         fprintf(arq2_txt, "Preco: R$%.2f\n", despesa.preco);
         fprintf(arq2_txt, "Data: %02d/%02d/%04d\n\n", despesa.dia,despesa.mes,despesa.ano);
-        fprintf(arq_txt, "\n");
-
     }
     fclose(arq2_txt);
 

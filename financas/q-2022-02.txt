@@ -1,0 +1,12 @@
+Descricao: q
+Categoria: q
+Preco: R$5.00
+Data: 25/02/2022
+
+
+Descricao: q
+Categoria: q
+Preco: R$10.00
+Data: 23/02/2022
+
+
