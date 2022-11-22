@@ -34,12 +34,11 @@ void desc(void *d){
 
 void cadastrar(){
     gerenciador despesa;
-    printf("\nDigite a descricao da despesa: ");
+    printf("Digite a descricao da despesa: ");
     desc(&despesa.descricao);
     printf("Digite a categoria da despesa: ");
     desc(&despesa.categoria);
     printf("Digite o preco da despesa: ");
-    printf("R$");
     scanf("%f",&despesa.preco);
     printf("Digite o dia da despesa: ");
     scanf("%d",&despesa.dia);
@@ -48,8 +47,6 @@ void cadastrar(){
     printf("Digite o ano da despesa: ");
     scanf("%d",&despesa.ano);
     despesa.total = despesa.total + despesa.preco;
-
-    printf("\nDespesa cadastrada com sucesso!\n");
 
     FILE *arq; // arquivo binario que armazena despesas por ano e mes inseridos pelo usuario.
     char nome_arq[30]; //lista para armazenar o nome dos arquivos binarios
@@ -105,6 +102,8 @@ void cadastrar(){
         fprintf(arq2_txt, "Categoria: %s\n", despesa.categoria);
         fprintf(arq2_txt, "Preco: R$%.2f\n", despesa.preco);
         fprintf(arq2_txt, "Data: %02d/%02d/%04d\n\n", despesa.dia,despesa.mes,despesa.ano);
+        fprintf(arq_txt, "\n");
+
     }
     fclose(arq2_txt);
 
@@ -169,13 +168,12 @@ void relatorio_ultimoMes(){
     FILE *arq2;
     char nome_arq[30];
 
-    printf("\nDigite a categoria desejada:");
+    printf("Digite a categoria desejada:");
     scanf("%s", despesa.categoria);
     printf("Digite o mes atual: ");
     scanf("%d", &despesa.mes);
     printf("Digite o ano atual: ");
     scanf("%d", &despesa.ano);
-    printf("\n");
 
     //verifica o mes: se for digitado 1, o mes anterior é 12, se for 2, o mes anterior é 1 e assim por diante.
 
@@ -193,6 +191,7 @@ void relatorio_ultimoMes(){
                 printf("Categoria: %s\n", despesa.categoria);
                 printf("Preco: R$%.2f\n", despesa.preco);
                 printf("Data: %02d/%02d/%04d\n", despesa.dia,despesa.mes,despesa.ano);
+                printf("\n");
             }
         }
     } else{
@@ -208,7 +207,6 @@ void relatorio_ultimoMes(){
                 printf("Categoria: %s\n", despesa.categoria);
                 printf("Preco: R$%.2f\n", despesa.preco);
                 printf("Data: %02d/%02d/%04d\n", despesa.dia,despesa.mes,despesa.ano);
-                printf("\n");
             }
         }
     }
@@ -222,9 +220,8 @@ void relatorio_12Meses(){
     FILE *arq3;
     char nome_arq[30];
 
-    printf("\nDigite o ano: ");
+    printf("Digite o ano: ");
     scanf("%d", &despesa.ano);
-    printf("\n");
 
     sprintf(nome_arq,"financas/%04d", despesa.ano);
     arq3 = fopen(nome_arq, "rb");
@@ -256,7 +253,7 @@ void total(){
         return;
     } else{
         while(fread(&despesa, sizeof(gerenciador), 1, arq_total) != 0){
-            printf("\nTotal Gasto: R$%.2f\n", despesa.total);
+            printf("Total Gasto: R$%.2f\n", despesa.total);
         }
     }
     fclose(arq_total);
@@ -270,8 +267,7 @@ void cadastrar_poupanca(){
     char nome_arq[30];
     char nome_arq_txt[30];
 
-    printf("\nDigite o valor: ");
-    printf("R$");
+    printf("Digite o valor: ");
     scanf("%f", &p.valor);
     printf("Digite o dia: ");
     scanf("%d", &p.diap);
@@ -279,9 +275,6 @@ void cadastrar_poupanca(){
     scanf("%d", &p.mesp);
     printf("Digite o ano: ");
     scanf("%d", &p.anop);
-
-    printf("\nPoupança cadastrada com sucesso!\n");
-    printf("\n");
 
     //calculo do rendimento anual da poupança através da taxa de 5% ao ano
 
@@ -335,9 +328,8 @@ void rendimento_poupanca_12meses(){
     FILE *arq_poupanca;
     char nome_arq[30];
 
-    printf("\nDigite o ano: ");
+    printf("Digite o ano: ");
     scanf("%d", &p.anop);
-    printf("\n");
 
     sprintf(nome_arq, "financas/poupanca-%04d", p.anop);
     arq_poupanca = fopen(nome_arq, "rb");
@@ -347,7 +339,6 @@ void rendimento_poupanca_12meses(){
     } else{
         while(fread(&p, sizeof(poupanca), 1, arq_poupanca) != 0){
             printf("Rendimento após 12 meses será de: R$%.2lf\n", p.rendimento);
-            printf("\n");
         }
     }
     fclose(arq_poupanca);
@@ -360,9 +351,8 @@ void val_Fim_poup(){
     FILE *arq_poupanca;
     char nome_arq[30];
 
-    printf("\nDigite o ano: ");
+    printf("Digite o ano: ");
     scanf("%d", &p.anop);
-    printf("\n");
 
     sprintf(nome_arq, "financas/poupanca-%04d", p.anop);
     arq_poupanca = fopen(nome_arq, "rb");
@@ -371,8 +361,7 @@ void val_Fim_poup(){
         return;
     } else{
         while(fread(&p, sizeof(poupanca), 1, arq_poupanca) != 0){
-            printf("Valor final será de: R$%.2lf\n",p.valor_final);
-            printf("\n");
+            printf("\nValor final será de: R$%.2lf\n",p.valor_final);
         }
     }
     fclose(arq_poupanca);
@@ -398,33 +387,30 @@ void apagar_poupanca(){
     char nome_arq_txt[30];
     int ano;
 
-    printf("\nDigite o ano que deseja apagar: ");
+    printf("Digite o ano que deseja apagar: ");
     scanf("%d", &ano);
-    printf("\n");
 
     sprintf(nome_arq, "financas/poupanca-%04d", ano);
     remove(nome_arq);
 
     sprintf(nome_arq_txt, "financas/poupanca-%04d.txt", ano);
     remove(nome_arq_txt);
-
-    printf("Dados da Poupança apagados com sucesso!\n");
-    printf("\n");
 }
 
 // Função que inicializa a poupança.
 
 void poupancas(){
     int opcao;
-    do{
-        printf("0 - Sair\n");
-        printf("1 - Cadastrar Poupança\n");
-        printf("2 - Rendimento da Poupança após 12 meses\n");
-        printf("3 - Exibir Valor final\n");
-        printf("4 - Apagar dados da Poupança\n");
-        printf("-------------------------------\n");
-        printf("Digite a opção desejada: ");
-        scanf("%d", &opcao);
+        do{
+            printf("\n-----------Poupança-----------\n");
+            printf("0 - Sair\n");
+            printf("1 - Cadastrar Poupança\n");
+            printf("2 - Rendimento da Poupança após 12 meses\n");
+            printf("3 - Exibir Valor final\n");
+            printf("4 - Apagar dados da Poupança\n");
+            printf("-------------------------------\n");
+            printf("Digite a opção desejada:\n");
+            scanf("%d", &opcao);
 
         switch(opcao){
             case 0:
@@ -469,23 +455,23 @@ void menu(){
                 printf("OK... Saindo...\n");
                 break;
             case 1:
-                printf("\n---------OPÇÃO 1 -----------\n");
+                printf("---------OPÇÃO 1 -----------\n");
                 cadastrar();
                 break;
             case 2:
-                printf("\n---------OPÇÃO 2 -----------\n");
+                printf("---------OPÇÃO 2 -----------\n");
                 relatorio_ultimoMes();
                 break;
             case 3:
-                printf("\n---------OPÇÃO 3 -----------\n");
+                printf("---------OPÇÃO 3 -----------\n");
                 relatorio_12Meses();
                 break;
             case 4:
-                printf("\n---------OPÇÃO 4 -----------\n");
+                printf("---------OPÇÃO 4 -----------\n");
                 total();
                 break;
             case 5:
-                printf("\n---------OPÇÃO 5 -----------\n");
+                printf("---------OPÇÃO 5 -----------\n");
                 poupancas();
                 break;
             default:
